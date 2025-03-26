@@ -1,0 +1,35 @@
+<div class="modal fade in" id="filter-popup">
+    <div class="modal-dialog table-modal-dailog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">{{ table_filter_title|default:'Data Filter'}}</h4>
+            </div>
+            <form action="{{table_filter_action|default:request.path}}" method="{{table_filter_method|default:'GET'}}">
+                <div class="modal-body">             
+                    {% for filter_key,filter_value in table_filter.items %}
+                        <div style="margin-bottom: 10px;">
+                            <label for="id_{{filter_key}}">{{filter_value.label|safe}}</label>
+                            {% if filter_value.type == 'select' %}
+                                <select name="{{filter_key}}" id="id_{{filter_key}}" class="form-control {% if filter_value.class %}{{filter_value.class}}{% endif %}">
+                                    {% for op_value,op_label in filter_value.options %}
+                                        <option value="{{op_value}}">{{op_label}}</option>
+                                    {% endfor %}
+                                </select>
+                            {% elif filter_value.type == 'textarea' %}
+                                <textarea id="id_{{filter_key}}" name="{{filter_key}}" rows="4" class="form-control {% if filter_value.class %}{{filter_value.class}}{% endif %}"></textarea>
+                            {% else %}
+                                <input name="{{filter_key}}" id="id_{{filter_key}}" type="{{filter_value.type}}" class="form-control {% if filter_value.class %}{{filter_value.class}}{% endif %}">
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Find</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

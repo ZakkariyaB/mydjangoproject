@@ -1,0 +1,12 @@
+{% if perms.rc_common.add_commonconfigurations or perms.rc_common.system_reset_permissions %}
+    <li class="header">More </li>
+    {% if perms.rc_common.add_commonconfigurations %}
+        <li><a href="{% url 'rc_configurations' %}"><i class="fa fa-cog"></i> <span>Configurations</span></a></li>
+    {% endif %}
+    {% if perms.rc_common.developer_permissions %}
+        <li><a href="{% url 'test_code' %}"><i class="fa fa-cog"></i> <span>Run Test</span></a></li>
+    {% endif %}
+    {% if perms.rc_common.system_reset_permissions %}
+        <li><a href="{% url 'rc_reset_tables' %}"><i class="fa fa-cog"></i> <span>Reset Tables</span></a></li>
+    {% endif %}
+{% endif %}

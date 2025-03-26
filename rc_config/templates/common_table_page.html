@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+<!-- Content Header (Breadcrumb) -->
+{% block breadcrumb %}
+    <li><a href="{% url 'dashboard' %}"><i class="fa fa-dashboard"></i>Home</a></li>
+    {% if table_header %}
+        <li class="active">{{table_header.title|safe}}</li>
+    {% endif %}
+{% endblock %}
+
+<!-- Main content -->
+{% block content %}
+    <section class="content">
+        <div class="bg-gray-light" style="margin-top: 25px;">
+            {% include 'parts/table_header.html' %}
+            {% include 'elements/tables/table.html' %}
+            {% include 'elements/tables/table_modal.html' %}
+        </div>
+    </section>
+{% endblock %}

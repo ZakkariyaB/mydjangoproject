@@ -1,0 +1,16 @@
+{% load table_tags %}
+<thead>
+    <tr role="row">
+        <th>#</th>
+        {% load_join_col_head join_cols_headers %}
+        {% for key,value in table_headers.items %}
+            {% if key in value_as_actions %}
+                <th colspan="4">
+            {% else %}
+                <th>
+            {% endif %}
+                {{value}}
+            </th>
+        {% endfor %}
+    </tr>
+</thead>

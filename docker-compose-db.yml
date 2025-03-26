@@ -1,0 +1,29 @@
+version: "2"
+
+networks:
+    eye-clinic-network:
+      name: eye-clinic-network
+
+services:
+  db:
+    image: postgres:12.13
+    container_name: eye-clinic-postgres-container
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - eye-clinic-network
+    ports:
+      - "5434:5432"
+
+  adminer:
+    image: adminer
+    restart: always
+    networks:
+      - eye-clinic-network
+    ports:
+      - "8080:8080"

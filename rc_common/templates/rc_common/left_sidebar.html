@@ -1,0 +1,3 @@
+{% if perms.rc_main.dashboard_permissions %}
+    <li><a href="{% url 'dashboard' %}"><i class="fa fa-line-chart"></i><span>Dashboard</span></a></li>
+{% endif %}

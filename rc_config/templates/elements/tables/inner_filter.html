@@ -1,0 +1,17 @@
+{% if table_inner_filter %}
+<div class="row">
+    <div class="col-sm-6">
+        <div id="example1_filter" class="dataTables_filter">
+            <form action="{{table_filter_action|default:request.path}}" method="{{table_filter_method|default:'GET'}}">
+                {% for filter_key,filter_value in table_inner_filter.items %}
+                    <label>
+                        {{filter_value.label}}:
+                        <input type="{{filter_value.type}}" name="{{filter_key}}"lass="form-control input-sm" placeholder="{{filter_value.label}}" aria-controls="example1">
+                    </label>
+                {% endfor %}
+                <button class="input-sm btn-primary"><i class='fa fa-search'></i></button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}

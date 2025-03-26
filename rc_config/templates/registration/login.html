@@ -1,0 +1,94 @@
+{% load static %}
+{% load widget_tweaks %}
+{% load form_tags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Log in</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="{% static 'bower_components/Ionicons/css/ionicons.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/AdminLTE.min.css' %}">
+  <!-- Custom Style -->
+  <link rel="stylesheet" href="{% static 'custom/custom.css' %}">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="{% static 'google/googleapi.css' %}">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <a href="#"><b>RECORD ROOM</b></a>
+  </div>  
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg">Log in to continue..!</p>
+    <form method="post">
+      <!-- CSRF TOKEN -->
+      {% csrf_token %}
+
+      <!-- Hidden fields -->
+      {% for hidden_field in form.hidden_fields %}
+          {{ hidden_field }}
+          {% if hidden_field.errors %}
+              {% for error in hidden_field.errors %}
+              <div class="alert alert-danger" role="alert">
+                  {{ error }}
+              </div>
+              {% endfor %}
+          {% endif %}
+      {% endfor %}
+
+      <!-- Non field errors -->
+      {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+          <div class="alert alert-danger" role="alert">
+              {{ error }}
+          </div>
+          {% endfor %}
+      {% endif %}
+
+      <!-- Rendering Feilds -->
+      <div class="row">
+          <div class="col-sm-12">
+              {% for field in form.visible_fields %}
+                  <div class="col-sm-12" style="margin-bottom: 10px; margin-top: 10px">
+                      {{ field.label_tag }}
+                      {% render_field field class=form|rc_validate_class:field placeholder=field.label %}
+                      {% rc_validate_error field %}
+                      {% rc_field_help_text field %}
+                  </div>
+              {% endfor %}
+          </div> 
+          <div class="col-sm-12" style="margin-bottom: 10px;margin-top: 10px;">
+            <div class="col-sm-12" style="margin-bottom: 10px;">
+                <button type="submit" class="btn btn-block btn-primary">Login</button>
+            </div>
+          </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- jQuery 3 -->
+<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

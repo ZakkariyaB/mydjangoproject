@@ -1,0 +1,66 @@
+{% load widget_tweaks %}
+{% load form_tags %}
+
+<!-- CSRF TOKEN -->
+    {% csrf_token %}
+
+    <!-- Hidden fields -->
+    {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field }}
+        {% if hidden_field.errors %}
+            {% for error in hidden_field.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+    <!-- Non field errors -->
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Rendering Feilds -->
+    <div class="row">
+        <div class="col-md-12">
+            {% for field in form.visible_fields %}
+                {% if 'co-one' in field.field.widget.attrs.class %}
+                    <div class="col-md-1">
+                {% elif 'co-two' in field.field.widget.attrs.class %}
+                    <div class="col-md-2">
+                {% elif 'co-three' in field.field.widget.attrs.class %}
+                    <div class="col-md-3">
+                {% elif 'co-four' in field.field.widget.attrs.class %}
+                    <div class="col-md-4">
+                {% elif 'co-five' in field.field.widget.attrs.class %}
+                    <div class="col-md-5">
+                {% elif 'co-six' in field.field.widget.attrs.class %}
+                    <div class="col-md-6">
+                {% elif 'co-seven' in field.field.widget.attrs.class %}
+                    <div class="col-md-7">
+                {% elif 'co-eight' in field.field.widget.attrs.class %}
+                    <div class="col-md-8">
+                {% elif 'co-nine' in field.field.widget.attrs.class %}
+                    <div class="col-md-9">
+                {% elif 'co-ten' in field.field.widget.attrs.class %}
+                    <div class="col-md-10">
+                {% elif 'co-eleven' in field.field.widget.attrs.class %}
+                    <div class="col-md-11">
+                {% elif 'co-twelve' in field.field.widget.attrs.class %}
+                    <div class="col-md-12">
+                {% else %}
+                    <div class="col-md-4">
+                {% endif %}
+                    {{ field.label_tag }}
+                    {% render_field field class=form|rc_validate_class:field placeholder=field.label %}
+                    {% rc_validate_error field %}
+                    {% rc_field_help_text field %}
+                </div>
+            {% endfor %}
+        </div> 
+    </div>

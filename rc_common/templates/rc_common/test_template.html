@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+<!-- Content Header (Breadcrumb) -->
+{% block breadcrumb %}
+		<li><a href="{% url 'dashboard' %}"><i class="fa fa-dashboard"></i>Home</a></li>
+		{% if table_header %}
+				<li class="active">{{table_header.title|safe}}</li>
+		{% endif %}
+{% endblock %}
+
+<!-- Main content -->
+{% block content %}
+		<section class="content">
+				<div class="bg-gray-light" style="margin-top: 25px;">
+					{% include 'parts/table_header.html' %}
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-12">
+								<div class="error-box"></div>
+
+								<div class="progress active">
+									<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+										<span class="progress-bar-text"></span>
+									</div>
+								</div>
+
+								
+							</div>
+							<div class="col-md-12" style="margin-bottom: 10px;margin-top: 10px;">
+								<div class="col-md-4 col-md-2 pull-left" style="margin-bottom: 10px;">
+									<a href="#" class="btn btn-block btn-default" role="button">Back</a>
+								</div>
+								<div class="col-md-4 col-md-2 pull-right" style="margin-bottom: 10px;">
+									<a href="#" class="btn btn-block btn-success" role="button">Continue</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+		</section>
+{% endblock %}
+{% block javascript %}
+	<script>
+			jQuery(document).ready(function(){
+				jQuery('.progress-bar').css({'width': 100 + '%'});
+				jQuery('.progress-bar-text').html(100 + '%')
+				jQuery('.progress-bar').removeClass('progress-bar-success')
+				jQuery('.progress-bar').addClass('progress-bar-danger') 
+				let error_message = `<div class="bg-light text-danger">
+										<div class="inner">
+										  <h3><i class="fa fa-close"></i> Error</h3>						
+										  <p>Some Error Occured. Please Try Again</p>
+										</div>
+									</div>`
+				jQuery('.error-box').html(error_message) 
+			});
+	</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+

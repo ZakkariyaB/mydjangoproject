@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- Content Header (Page header) -->
+{% block main_header %}
+Dashboard
+<small>RC DJANGO V1</small>
+{% endblock %}
+
+<!-- Content Header (Breadcrumb) -->
+{% block breadcrumb %}
+    <li><a href="{% url 'dashboard' %}"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+{% endblock %}
+
+<!-- Main content -->
+{% block content %}
+  <section class="content">
+    <div style="height: 80vh;display: flex;align-items: center;justify-content: center;">
+        <h1>RC DJANGO V1</h1>  
+    </div>
+  </section>
+{% endblock %}

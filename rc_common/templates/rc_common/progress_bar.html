@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block breadcrumb %}
+		<li><a href="{% url 'dashboard' %}"><i class="fa fa-dashboard"></i>Home</a></li>
+		{% if table_header %}
+				<li class="active">{{table_header.title|safe}}</li>
+		{% endif %}
+{% endblock %}
+{% block content %}
+		<section class="content">
+				<div class="bg-gray-light" style="margin-top: 25px;">
+					{% include 'parts/table_header.html' %}
+					<div class="row">
+						<div class="col-md-12">
+							{% if task_ids %}
+							<div class="alert d-flex">
+								<i class="icon fa fa-warning"></i>
+								<p class="text-danger">Note: Please wait until the current upload completion for the next upload.</p>
+							  </div>
+								{% for task_id in task_ids %}
+									<div class="col-md-12" id="{{task_id}}">
+										<div class="message-box margin-x-md">
+											<p class="text-primary">
+												<i class="fa fa-hourglass-half" aria-hidden="true"></i> 
+												<span id="message">
+													Progressing 
+												</span>
+												(<span class="progress-bar-text">0%</span>)
+											</p>						
+										</div>
+										<div class="progress progress-sm active">
+											<div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							{% else %}
+								<div class="col-md-12" id="{{task_id}}">
+									<div class="message-box margin-x-md">
+										<p class="text-danger">
+											<i class="fa fa-close" aria-hidden="true"></i> 
+											<span id="message">
+												File Already Uploaded / Invalid File 
+											</span>
+										</p>						
+									</div>
+									<div class="progress progress-sm active">
+										<div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+										</div>
+									</div>
+								</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+		</section>
+{% endblock %}
+{% block javascript %}
+	<script>
+			jQuery(document).ready(function(){
+				job_state_url = "{% url 'celery_job_result_ajax' %}"
+				var template_variables = {
+					'error' : {'icon':'fa fa-close','text':'text-danger','head':'Error'},
+					'success' : {'icon':'fa fa-check','text':'text-success','head':'Success'},
+					'pending' : {'icon':'fa fa-hourglass-half','text':'text-primary','head':'Progressing'}
+				}
+				var job_state = function(task_ids){
+					jQuery.ajax({
+							url : job_state_url,
+							type : 'GET',
+							data : {'task_ids[]':task_ids}
+					}).done(function(task_results){
+						var next_tasks = []
+						$.each(task_results,function(task_id,task){
+							console.log(task_id,task)
+							if(task.result){
+								if(task.result.percent){
+									jQuery('#'+task_id).find('.progress-bar').css({'width': task.result.percent + '%'});
+									jQuery('#'+task_id).find('.progress-bar-text').html(task.result.percent + '%')
+								}
+								let icons = template_variables['pending']['icon']
+								let message = ''
+								let head = template_variables['pending']['head']
+								let text_class = template_variables['pending']['text']
+								if(task.result.state){
+									text_class = template_variables[task.result.state]['text']
+									icons = template_variables[task.result.state]['icon']
+									head = template_variables[task.result.state]['head']
+									if(task.result.state == 'error'){
+										jQuery('#'+task_id).find('.progress-bar').removeClass('progress-bar-primary').addClass('progress-bar-danger') 
+									}
+									if(task.result.state == 'success'){
+										jQuery('#'+task_id).find('.progress-bar').removeClass('progress-bar-primary').addClass('progress-bar-success') 
+									}
+								}
+								if(task.result.message){
+									message = task.result.message
+								}
+								jQuery("#"+task_id).find('.message-box').find('p').removeClass().addClass(text_class); 
+								jQuery("#"+task_id).find('.message-box').find('#message').html(message); 
+								jQuery("#"+task_id).find('.message-box').find('i').removeClass().addClass(icons)
+							}
+							switch (task.state){
+								case 'SUCCESS':
+									break;
+								case 'PROGRESS':
+									next_tasks.push(task_id)
+									// job_state(task_id);
+									break;
+								default:
+									next_tasks.push(task_id)
+									// job_state(task_id);
+							}
+						});
+						if(typeof next_tasks !== 'undefined' && next_tasks.length > 0){
+							job_state(next_tasks)
+						}
+					});
+				}
+				{% if task_ids %}
+					var task_ids = []
+					{% for task_id in task_ids %}
+						task_ids.push("{{task_id}}")
+					{% endfor %}
+
+					job_state(task_ids);
+				{% endif %}
+			});
+	</script>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% load table_tags %}
+
+{% for data in table_values %}
+    <div class="modal fade in" id="table-modal-{{data.id}}">
+        <div class="modal-dialog modal-dialog-centered table-modal-dailog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">{{ table_modal_title|default:'View More'}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover dataTable" role="grid">
+                            <thead>
+                                <tr role="row">
+                                    <th>#</th>
+                                    {% load_join_col_head modal_join_cols_headers %}
+                                    {% for key,value in modal_headers.items %}
+                                        <th>
+                                            {{value}}
+                                        </th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    <tr role="row">
+                                        <td>{{ forloop.counter0|add:table_values.start_index }}</td>
+                                        {% load_join_col_data data join_cols_headers %}
+                                        {% for key,value in modal_headers.items %}
+                                            {% if key in value_as_list %}
+                                                <td>{{data|getattribute:key|get_as_list}}</td>
+                                            {% elif key in value_as_actions %}
+                                                {% render_table_action data|getattribute:key %}
+                                            {% elif key in value_as_issue_status %}
+                                                <td>{{data|value_as_issue_status:key}}</td>
+                                            {% elif key in value_as_issue_history_status %}
+                                                <td>{{data|value_as_issue_history_status:key}}</td>
+                                            {% else %}            
+                                                <td>{{data|getattribute:key}}</td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </div>             
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

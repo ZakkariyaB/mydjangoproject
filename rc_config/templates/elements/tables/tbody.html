@@ -1,0 +1,23 @@
+{% load table_tags %}
+
+<tbody>
+    {% for data in table_values %}            
+        <tr role="row">
+            <td>{{ forloop.counter0|add:table_values.start_index }}</td>
+            {% load_join_col_data data join_cols_headers %}
+            {% for key,value in table_headers.items %}
+                {% if key in value_as_list %}
+                    <td>{{data|getattribute:key|get_as_list}}</td>
+                {% elif key in value_as_actions %}
+                    {% render_table_action data|getattribute:key %}
+                {% elif key in value_as_issue_status %}
+                    <td>{{data|value_as_issue_status:key}}</td>
+                {% elif key in value_as_issue_history_status %}
+                    <td>{{data|value_as_issue_history_status:key}}</td>
+                {% else %}            
+                    <td>{{data|getattribute:key}}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</tbody>

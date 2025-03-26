@@ -1,0 +1,12 @@
+<!-- Left side column. -->
+<aside class="main-sidebar">
+    <section class="sidebar">
+        <ul class="sidebar-menu" data-widget="tree">
+            {% include 'rc_common/left_sidebar.html' %}
+            {% include 'rc_core/left_sidebar.html' %}
+            {% include 'rc_common/configuration_settings_menu.html' %}
+            <li class="header"></li>
+            <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> <span>Logout</span></a></li>
+        </ul>
+    </section>
+</aside>

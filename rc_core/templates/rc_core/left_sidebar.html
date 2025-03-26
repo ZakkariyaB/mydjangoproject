@@ -1,0 +1,9 @@
+{% if perms.auth.add_user or perms.auth.view_user %}
+    <li class="header">Administration </li>
+    {% if perms.auth.add_user %}
+        <li><a href="{% url 'adduser' %}"><i class="fa fa-user"></i> <span>Add New User</span></a></li>
+    {% endif %}
+    {% if perms.auth.view_user %}
+        <li><a href="{% url 'manageusers' %}"><i class="fa fa-user"></i> <span>Manage Usres</span></a></li>
+    {% endif %}
+{% endif %}

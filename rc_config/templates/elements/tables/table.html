@@ -1,0 +1,24 @@
+{% load table_tags %}
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="" class="dataTables_wrapper form-inline dt-bootstrap">
+                {% table_inner_filter %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover dataTable" role="grid">
+                                {% include 'elements/tables/thead.html' %}
+                                {% include 'elements/tables/tbody.html' %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {% include 'elements/tables/pagination.html' with page_obj=table_values %}
+            </div>
+        </div>
+    </div>
+</section>
+{% if table_filter %}
+{% include 'elements/tables/filter_modal.html' %}
+{% endif %}
